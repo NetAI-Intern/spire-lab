@@ -11,6 +11,8 @@ spec:
     - fromEndpoints:
         - matchLabels:
             app.kubernetes.io/name: caller
+      authentication:
+        mode: "required"      
       toPorts:
         - ports:
             - port: "80"
@@ -19,9 +21,5 @@ spec:
             http:
               - method: GET
                 path: "/"
-          authentication:
-            mode: "required"
     - fromEntities:
         - host
-  ingressDeny:
-    - {} 
