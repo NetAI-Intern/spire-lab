@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "caller-deny.fullname" . }}-test-connection"
+  labels:
+    {{- include "caller-deny.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "caller-deny.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
