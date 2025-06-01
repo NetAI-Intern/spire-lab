@@ -1,0 +1,27 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-caller-to-echo
+  namespace: test-cilium-spiffe
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: echo
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: caller
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP
+          rules:
+            http:
+              - method: GET
+                path: "/"
+          authentication:
+            mode: "required"
+    - fromEntities:
+        - host
+  ingressDeny:
+    - {} 
